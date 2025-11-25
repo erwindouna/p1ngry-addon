@@ -17,7 +17,7 @@ usb: true
 options:
   dsmr_enabled: true
   dsmr_mode: "serial"
-  dsmr_serial_device: null
+  dsmr_serial_device: "/dev/ttyUSB0"
   dsmr_serial_baud: 115200
   dsmr_serial_databits: 8
   dsmr_serial_parity: "N"
