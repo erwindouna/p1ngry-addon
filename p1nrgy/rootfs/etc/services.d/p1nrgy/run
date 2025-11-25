@@ -1,0 +1,33 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Start the example service
+# s6-overlay docs: https://github.com/just-containers/s6-overlay
+# ==============================================================================
+
+function _hass {
+  ADDON_VERSON=$(jq --raw-output '.version' /app/ha_addon_version.json)
+  _info "Home Assistant Add-on release: ${ADDON_VERSON}"
+  CHECK_UPDATE=$(curl -s "https://api-check.duckdns.org/dsmr-datalogger-addon/${ADDON_VERSON}")
+  if [[ "$CHECK_UPDATE" == *"response_string"* ]]; then
+    OUTPUT=$(echo $CHECK_UPDATE | jq --raw-output .response_string)
+    _info "$OUTPUT"
+  else
+    _info "Home Assistant Add-on: Update check failed"
+  fi
+  CONFIG_PATH=/data/options.json
+  export DSMR_ENABLED=$(bashio::config 'dsmr_enabled')
+  export DSMR_MODE=$(bashio::config 'dsmr_mode')
+  export DSMR_SERIAL_DEVICE=$(bashio::config 'dsmr_serial_device')
+  export DSMR_SERIAL_BAUDRATE=$(bashio::config 'dsmr_serial_baudrate')
+  export DSMR_SERIAL_DATABITS=$(bashio::config 'dsmr_serial_databits')
+  export DSMR_SERIAL_PARITY=$(bashio::config 'dsmr_serial_parity')
+  export DSMR_SERIAL_STOPBITS=$(bashio::config 'dsmr_serial_stopbits')
+  export DSMR_SERIAL_TIMEOUT=$(bashio::config 'dsmr_serial_timeout')
+
+  _info "p1nrgy started"
+}
+
+_hass
+
+## Run your program
+exec /usr/bin/p1nrgy

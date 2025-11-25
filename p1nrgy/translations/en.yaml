@@ -1,4 +1,25 @@
 configuration:
-  message:
-    name: Message
-    description: The message that will be printed to the log when starting this example add-on.
+  dsmr_enabled:
+    name: "Enable DSMR"
+    description: "Enable DSMR (Dutch Smart Meter Requirements) support"
+  dsmr_mode:
+    name: "DSMR Mode"
+    description: "DSMR mode, use mock or serial"
+  dsmr_serial_device:
+    name: "DSMR Serial Device"
+    description: "Serial device path for the DSMR smart meter"
+  dsmr_serial_baud:
+    name: "DSMR Serial Baud"
+    description: "Baud rate for the serial connection"
+  dsmr_serial_databits:
+    name: "DSMR Serial Data Bits"
+    description: "Number of data bits for the serial connection"
+  dsmr_serial_parity:
+    name: "DSMR Serial Parity"
+    description: "Parity for the serial connection (N=None, E=Even, O=Odd)"
+  dsmr_serial_stopbits:
+    name: "DSMR Serial Stop Bits"
+    description: "Number of stop bits for the serial connection"
+  dsmr_serial_timeout:
+    name: "DSMR Serial Timeout"
+    description: "Timeout in seconds for the serial connection"
