@@ -25,14 +25,13 @@ main() {
   DSMR_SERIAL_DATABITS="$(bashio::config 'dsmr_serial_databits')"
   DSMR_SERIAL_PARITY="$(bashio::config 'dsmr_serial_parity')"
   DSMR_SERIAL_STOPBITS="$(bashio::config 'dsmr_serial_stopbits')"
-  DSMR_SERIAL_TIMEOUT="$(bashio::config 'dsmr_serial_timeout')"
 
   MQTT_HOST="$(bashio::services mqtt 'host')"
   MQTT_PORT="$(bashio::services mqtt 'port')"
   MQTT_USERNAME="$(bashio::services mqtt 'username')"
   MQTT_PASSWORD="$(bashio::services mqtt 'password')"
   MQTT_CLIENT_ID="p1nrgy_hass_addon"
-  MQTT_TOPIC="$(bashio::config 'mqtt_topic')"
+  MQTT_TOPIC="p1nrgy/data"
 
   export DSMR_ENABLED
   export DSMR_MODE
@@ -41,7 +40,7 @@ main() {
   export DSMR_SERIAL_DATABITS
   export DSMR_SERIAL_PARITY
   export DSMR_SERIAL_STOPBITS
-  export DSMR_SERIAL_TIMEOUT
+  export DSMR_SERIAL_TIMEOUT="20s"
 
   export MQTT_BROKER="tcp://${MQTT_HOST}:${MQTT_PORT}"
   export MQTT_USERNAME

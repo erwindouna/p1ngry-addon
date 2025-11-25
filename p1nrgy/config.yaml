@@ -22,7 +22,6 @@ options:
   dsmr_serial_databits: 8
   dsmr_serial_parity: "N"
   dsmr_serial_stopbits: 1
-  dsmr_serial_timeout: 20
   mqtt_topic: "p1nrgy/data"
 schema:
   dsmr_enabled: bool
@@ -32,6 +31,5 @@ schema:
   dsmr_serial_databits: int
   dsmr_serial_parity: str
   dsmr_serial_stopbits: int
-  dsmr_serial_timeout: int
   mqtt_topic: str
 # image: "ghcr.io/erwindouna/p1nrgy" # TODO: Uncomment this line to use a prebuilt image
