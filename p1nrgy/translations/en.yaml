@@ -1,7 +1,7 @@
 configuration:
   dsmr_enabled:
     name: "Enable DSMR"
-    description: "Enable DSMR (Dutch Smart Meter Requirements) support"
+    description: "Enable DSMR support"
   dsmr_mode:
     name: "DSMR Mode"
     description: "DSMR mode, use mock or serial"
