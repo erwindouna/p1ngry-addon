@@ -23,3 +23,6 @@ configuration:
   dsmr_serial_timeout:
     name: "DSMR Serial Timeout"
     description: "Timeout in seconds for the serial connection"
+  mqtt_topic:
+    name: "MQTT Topic"
+    description: "Optional: MQTT topic. Leave default if you don't want to set a custom one."

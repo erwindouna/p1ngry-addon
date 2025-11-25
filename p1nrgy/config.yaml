@@ -8,6 +8,8 @@ arch:
   - aarch64
   - amd64
 init: false
+services:
+  - mqtt:need
 map:
   - share:rw
 options:
@@ -19,6 +21,7 @@ options:
   dsmr_serial_parity: "N"
   dsmr_serial_stopbits: 1
   dsmr_serial_timeout: 20
+  mqtt_topic: "p1nrgy/data"
 schema:
   dsmr_enabled: bool
   dsmr_mode: str
@@ -28,4 +31,5 @@ schema:
   dsmr_serial_parity: str
   dsmr_serial_stopbits: int
   dsmr_serial_timeout: int
-image: "ghcr.io/erwindouna/p1nrgy"
+  mqtt_topic: str
+# image: "ghcr.io/erwindouna/p1nrgy" # TODO: Uncomment this line to use a prebuilt image

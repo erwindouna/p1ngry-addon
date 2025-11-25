@@ -1,71 +1,59 @@
 #!/usr/bin/with-contenv bashio
-# ==============================================================================
-# Start the example service
-# s6-overlay docs: https://github.com/just-containers/s6-overlay
-# ==============================================================================
+set -euo pipefail
 
-function _hass {
-  ADDON_VERSON=$(jq --raw-output '.version' /app/ha_addon_version.json)
-  _info "Home Assistant Add-on release: ${ADDON_VERSON}"
-  CHECK_UPDATE=$(curl -s "https://api-check.duckdns.org/dsmr-datalogger-addon/${ADDON_VERSON}")
-  if [[ "$CHECK_UPDATE" == *"response_string"* ]]; then
-    OUTPUT=$(echo $CHECK_UPDATE | jq --raw-output .response_string)
-    _info "$OUTPUT"
+main() {
+  local addon_version response message env_file
+
+  addon_version=$(jq --raw-output '.version' /app/ha_addon_version.json)
+  bashio::log.info "Home Assistant add-on release: ${addon_version}"
+
+  if response=$(curl -sf "https://api-check.duckdns.org/dsmr-datalogger-addon/${addon_version}"); then
+    message=$(jq --raw-output '.response_string // empty' <<< "${response}")
+    if [[ -n "${message}" ]]; then
+      bashio::log.info "${message}"
+    else
+      bashio::log.warning "Update check response missing message"
+    fi
   else
-    _info "Home Assistant Add-on: Update check failed"
+    bashio::log.warning "Home Assistant add-on update check failed"
   fi
 
-  declare dsmr_enabled
-  declare dsmr_mode
-  declare dsmr_serial_device
-  declare dsmr_serial_baudrate
-  declare dsmr_serial_databits
-  declare dsmr_serial_parity
-  declare dsmr_serial_stopbits
-  declare dsmr_serial_timeout
+  DSMR_ENABLED="$(bashio::config 'dsmr_enabled')"
+  DSMR_MODE="$(bashio::config 'dsmr_mode')"
+  DSMR_SERIAL_DEVICE="$(bashio::config 'dsmr_serial_device')"
+  DSMR_SERIAL_BAUDRATE="$(bashio::config 'dsmr_serial_baudrate')"
+  DSMR_SERIAL_DATABITS="$(bashio::config 'dsmr_serial_databits')"
+  DSMR_SERIAL_PARITY="$(bashio::config 'dsmr_serial_parity')"
+  DSMR_SERIAL_STOPBITS="$(bashio::config 'dsmr_serial_stopbits')"
+  DSMR_SERIAL_TIMEOUT="$(bashio::config 'dsmr_serial_timeout')"
 
-  CONFIG_PATH=/data/options.yaml
+  MQTT_HOST="$(bashio::services mqtt 'host')"
+  MQTT_PORT="$(bashio::services mqtt 'port')"
+  MQTT_USERNAME="$(bashio::services mqtt 'username')"
+  MQTT_PASSWORD="$(bashio::services mqtt 'password')"
+  MQTT_CLIENT_ID="p1nrgy_hass_addon"
+  MQTT_TOPIC="$(bashio::config 'mqtt_topic')"
 
-  dsmr_enabled=$(bashio::config 'dsmr_enabled')
-  if bashio::var.true "${dsmr_enabled}"; then
-    bashio::log.info "DSMR reading is enabled"
-  else
-    bashio::log.info "DSMR reading is disabled"
-  fi
+  export DSMR_ENABLED
+  export DSMR_MODE
+  export DSMR_SERIAL_DEVICE
+  export DSMR_SERIAL_BAUDRATE
+  export DSMR_SERIAL_DATABITS
+  export DSMR_SERIAL_PARITY
+  export DSMR_SERIAL_STOPBITS
+  export DSMR_SERIAL_TIMEOUT
 
-  dsmr_mode=$(bashio::config 'dsmr_mode')
-  bashio::log.info "DSMR mode set to: ${dsmr_mode}"
-  dsmr_serial_device=$(bashio::config 'dsmr_serial_device')
-  bashio::log.info "DSMR serial device set to: ${dsmr_serial_device}"
 
-  dsmr_serial_baudrate=$(bashio::config 'dsmr_serial_baudrate')
-  bashio::log.info "DSMR serial baudrate set to: ${dsmr_serial_baudrate}"
 
-  dsmr_serial_databits=$(bashio::config 'dsmr_serial_databits')
-  bashio::log.info "DSMR serial databits set to: ${dsmr_serial_databits}"
-
-  dsmr_serial_parity=$(bashio::config 'dsmr_serial_parity')
-  bashio::log.info "DSMR serial parity set to: ${dsmr_serial_parity}"
-
-  dsmr_serial_stopbits=$(bashio::config 'dsmr_serial_stopbits')
-  bashio::log.info "DSMR serial stopbits set to: ${dsmr_serial_stopbits}"
-
-  dsmr_serial_timeout=$(bashio::config 'dsmr_serial_timeout')
-  bashio::log.info "DSMR serial timeout set to: ${dsmr_serial_timeout}"
-
-  export DSMR_ENABLED=dsmr_enabled
-  export DSMR_MODE=dsmr_mode
-  export DSMR_SERIAL_DEVICE=dsmr_serial_device
-  export DSMR_SERIAL_BAUDRATE=dsmr_serial_baudrate
-  export DSMR_SERIAL_DATABITS=dsmr_serial_databits
-  export DSMR_SERIAL_PARITY=dsmr_serial_parity
-  export DSMR_SERIAL_STOPBITS=dsmr_serial_stopbits
-  export DSMR_SERIAL_TIMEOUT=dsmr_serial_timeout
+  export MQTT_BROKER="tcp://${MQTT_HOST}:${MQTT_PORT}"
+  export MQTT_USERNAME
+  export MQTT_PASSWORD
+  export MQTT_CLIENT_ID
+  export MQTT_TOPIC
 
   bashio::log.info "p1nrgy started"
 }
 
-_hass
+main
 
-## Run your program
 exec /usr/bin/p1nrgy
