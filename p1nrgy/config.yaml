@@ -14,4 +14,4 @@ options:
   message: "Hello world..."
 schema:
   message: "str?"
-image: "ghcr.io/erwindouna/p1nrgy:{version}-{arch}"
+image: "ghcr.io/erwindouna/p1nrgy:{version}"
