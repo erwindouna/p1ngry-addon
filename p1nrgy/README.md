@@ -18,17 +18,34 @@ In order to install this add-on, you need to add this repository to your Home As
 
 ## Configuration
 
-By default, p1nrgy provides a basic configuration that should work for most DSMR smart meters using a serial connection. However, you may need to adjust the settings based on your specific setup. Available configuration options:
+By default, p1nrgy provides a basic configuration that should work for most DSMR smart meters using a serial connection. However, you may need to adjust the settings based on your specific setup. Upon your first installation, be mindful that you modify the configuration. Otherwise the add-on will start with default settings and most likely in mock mode. All options are required.
+It also requires the MQTT service to be set up and running in Home Assistant and use the setting from there.
 
-@Erwin: add the options per DSMR V3, V4, etc.
+p1nrgy requires the following configuration options:
 
-- `dsmr_enabled`: Enable or disable DSMR reading (default: true)
-- `dsmr_mode`: Mode of DSMR connection, either "serial" or "tcp" (default: "serial")
-- `dsmr_serial_device`: Serial device path for DSMR connection (default: "/dev/ttyUSB0")
-- `dsmr_serial_baud`: Baud rate for serial connection (default: 115200)
-- `dsmr_serial_databits`: Number of data bits for serial connection (default: 8)
-- `dsmr_serial_parity`: Parity for serial connection, either "N", "E", or "O" (default: "N")
-- `dsmr_serial_stopbits`: Number of stop bits for serial connection (default: 1)
+| Option                  | Description                                                                       | Default        |
+| ----------------------- | --------------------------------------------------------------------------------- | -------------- |
+| `Enable DSMR`           | Enable reading from a DSMR smart meter via a serial connection.                   | `true`         |
+| `DSMR mock`             | Enable mock mode for DSMR data (useful for testing without a real smart meter).   | `serial`       |
+| `DSMR device`           | A list of serial devices to try for reading DSMR data.                            | `/dev/ttyUSB0` |
+| `DSMR serial baud`      | The baudrate (see `DSMR serial settings` table for more information).             | `115200`       |
+| `DSMR serial data bits` | The parity and data bits (see `DSMR serial settings` table for more information). | `8`            |
+| `DSMR serial parity`    | The parity (see `DSMR serial settings` table for more information).               | `N`            |
+| `DSMR serial stop bits` | The number of stop bits (see `DSMR serial settings` table for more information).  | `1`            |
+
+### DSMR Serial Settings
+
+| DSMR Version     | Baudrate | Parity / Data Bits                         |
+| ---------------- | -------- | ------------------------------------------ |
+| DSMR 2.2         | 9600     | 7E1 (7 data bits, Even parity, 1 stop bit) |
+| DSMR 3.0         | 9600     | 7E1                                        |
+| DSMR 4.0         | 115200   | 8N1 (8 data bits, No parity, 1 stop bit)   |
+| DSMR 4.2         | 115200   | 8N1                                        |
+| DSMR 5.0 / 5.0.2 | 115200   | 8N1                                        |
+
+### Troubleshooting
+
+Upon starting the add-on, you can check the logs to see if it successfully connects to the DSMR smart meter and MQTT broker. The logging will provide details if one of them failed.
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
