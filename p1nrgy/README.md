@@ -43,6 +43,14 @@ p1nrgy requires the following configuration options:
 | DSMR 4.2         | 115200   | 8N1                                        |
 | DSMR 5.0 / 5.0.2 | 115200   | 8N1                                        |
 
+## Usage
+
+Once the add-on is installed and configured, start it from the Home Assistant Supervisor panel. The add-on will connect to the DSMR smart meter and begin publishing energy consumption data to the configured MQTT broker. p1nrgy will pubish on the topic: `p1nrgy/data`. For here, you can as you please.
+
+## Future plans
+
+Once the basics are stable, the plan is to make an integration that can automatically set up the MQTT sensors in Home Assistant based on the data published by p1nrgy.
+
 ### Troubleshooting
 
 Upon starting the add-on, you can check the logs to see if it successfully connects to the DSMR smart meter and MQTT broker. The logging will provide details if one of them failed.
