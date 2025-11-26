@@ -16,22 +16,4 @@ In order to install this add-on, you need to add this repository to your Home As
 
 [![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Ferwindouna%2Fp1ngry-addon)
 
-## Configuration
-
-By default, p1nrgy provides a basic configuration that should work for most DSMR smart meters using a serial connection. However, you may need to adjust the settings based on your specific setup. Available configuration options:
-
-@Erwin: add the options per DSMR V3, V4, etc.
-
-- `dsmr_enabled`: Enable or disable DSMR reading (default: true)
-- `dsmr_mode`: Mode of DSMR connection, either "serial" or "tcp" (default: "serial")
-- `dsmr_serial_device`: Serial device path for DSMR connection (default: "/dev/ttyUSB0")
-- `dsmr_serial_baud`: Baud rate for serial connection (default: 115200)
-- `dsmr_serial_databits`: Number of data bits for serial connection (default: 8)
-- `dsmr_serial_parity`: Parity for serial connection, either "N", "E", or "O" (default: "N")
-- `dsmr_serial_stopbits`: Number of stop bits for serial connection (default: 1)
-
-[aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
-[amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
-[armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
-[i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
+Then follow the instructions as given on the add-on page.
